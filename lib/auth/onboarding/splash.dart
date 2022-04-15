@@ -16,22 +16,10 @@ class _SplashState extends State<Splash> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(Duration(seconds: 5)).then((value) {
-      push(context, LoginScreen());
+    Future.delayed(const Duration(seconds: 5)).then((value) {
+      push(context, const LoginScreen());
     });
   }
-
-  // setGreenStausBar() {
-  //   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-  //       statusBarColor: Palette.primaryGreen,
-  //       statusBarIconBrightness: Brightness.light));
-  // }
-
-  // discardStatusbar() {
-  //   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-  //       statusBarColor: Palette.scaffoldBg,
-  //       statusBarIconBrightness: Brightness.dark));
-  // }
 
   @override
   Widget build(BuildContext context) {
