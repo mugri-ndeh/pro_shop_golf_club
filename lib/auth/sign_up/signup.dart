@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pro_shop_golf_club/auth/complete_profile/complete_profile.dart';
+import 'package:pro_shop_golf_club/auth/login/login.dart';
 import 'package:pro_shop_golf_club/util/helper/helper.dart';
 
 import '../../util/constants/palette.dart';
@@ -72,6 +73,9 @@ class _SignUpState extends State<SignUp> {
                 )),
                 // const SizedBox(height: 50),
                 GestureDetector(
+                  onTap: () {
+                    pushReplacement(context, LoginScreen());
+                  },
                   child: Center(
                     child: SizedBox(
                       height: 50,

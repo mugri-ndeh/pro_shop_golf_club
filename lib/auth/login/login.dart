@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pro_shop_golf_club/auth/forgot_password/index.dart';
 import 'package:pro_shop_golf_club/auth/sign_up/signup.dart';
 import 'package:pro_shop_golf_club/auth/widgets/custom_auth_button.dart';
 import 'package:pro_shop_golf_club/auth/widgets/input_fields.dart';
@@ -45,19 +46,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                SizedBox(
-                  height: 50,
-                  child:
-                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                    const Text('Forgot password?'),
-                    IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.arrow_forward,
-                          color: Palette.primaryGreen,
-                        ))
-                  ]),
+                GestureDetector(
+                  onTap: () {
+                    push(context, Forgotindex());
+                  },
+                  child: SizedBox(
+                    height: 50,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          const Text('Forgot password?'),
+                          IconButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.arrow_forward,
+                                color: Palette.primaryGreen,
+                              ))
+                        ]),
+                  ),
                 ),
                 const SizedBox(height: 30),
                 Center(
