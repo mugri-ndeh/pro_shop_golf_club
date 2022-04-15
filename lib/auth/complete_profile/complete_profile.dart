@@ -39,10 +39,7 @@ class _CompleteprofileState extends State<Completeprofile> {
                   icon: const Icon(Icons.mail),
                 ),
                 const SizedBox(height: 8),
-                InputField(
-                  hint: 'phone',
-                  icon: const Icon(Icons.phone),
-                ),
+                PhoneInput(),
                 const SizedBox(height: 8),
                 InputField(
                     hint: 'date of birth', icon: const Icon(Icons.date_range)),
