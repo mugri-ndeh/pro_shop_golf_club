@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pro_shop_golf_club/auth/login/login.dart';
+import 'package:pro_shop_golf_club/auth/onboarding/splash.dart';
 
 import 'util/constants/palette.dart';
 
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.green,
           scaffoldBackgroundColor: Palette.scaffoldBg,
           textTheme: GoogleFonts.montserratTextTheme()),
-      home: const LoginScreen(),
+      home: Splash(),
     );
   }
 }
