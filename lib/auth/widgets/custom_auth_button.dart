@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:pro_shop_golf_club/util/constants/palette.dart';
 
 class AuthButton extends StatefulWidget {
-  AuthButton({Key? key, required this.text}) : super(key: key);
+  AuthButton({Key? key, required this.text, required this.onTap})
+      : super(key: key);
   final String text;
+  final Function()? onTap;
 
   @override
   State<AuthButton> createState() => _AuthButtonState();
@@ -14,6 +16,7 @@ class _AuthButtonState extends State<AuthButton> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
+      onTap: widget.onTap,
       child: Container(
         height: 50,
         width: size.width * 0.8,
