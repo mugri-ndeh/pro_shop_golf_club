@@ -62,6 +62,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 30),
                 Center(
                     child: AuthButton(
+                  onTap: () {
+                    push(context, SignUp());
+                  },
                   text: 'Login',
                 )),
                 // const SizedBox(height: 50),
