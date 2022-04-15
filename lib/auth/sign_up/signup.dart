@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pro_shop_golf_club/auth/complete_profile/complete_profile.dart';
+import 'package:pro_shop_golf_club/util/helper/helper.dart';
 
 import '../../util/constants/palette.dart';
 import '../widgets/custom_auth_button.dart';
@@ -25,14 +27,16 @@ class _SignUpState extends State<SignUp> {
                 const SizedBox(height: 20),
 
                 const Text(
-                  'Login',
+                  'Create account',
                   style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                 ),
                 Image.asset('assets/images/golf3.png'),
                 InputField(
                   hint: 'username',
-                  icon: const Icon(Icons.mail),
+                  icon: const Icon(Icons.person),
                 ),
+                const SizedBox(height: 8),
+
                 InputField(
                   hint: 'email',
                   icon: const Icon(Icons.mail),
@@ -47,24 +51,23 @@ class _SignUpState extends State<SignUp> {
                     color: Colors.grey,
                   ),
                 ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  height: 50,
-                  child:
-                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                    const Text('Forgot password?'),
-                    IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.arrow_forward,
-                          color: Palette.primaryGreen,
-                        ))
-                  ]),
+                const SizedBox(height: 8),
+                InputField(
+                  hint: 'confirm password',
+                  password: true,
+                  icon: const Icon(Icons.lock),
+                  prefixIcon: const Icon(
+                    Icons.remove_red_eye,
+                    color: Colors.grey,
+                  ),
                 ),
+
                 const SizedBox(height: 30),
                 Center(
                     child: AuthButton(
+                  onTap: () {
+                    push(context, Completeprofile());
+                  },
                   text: 'Sign Up',
                 )),
                 // const SizedBox(height: 50),
@@ -77,7 +80,7 @@ class _SignUpState extends State<SignUp> {
                           children: [
                             const Text('Already have an account? '),
                             Text(
-                              'Sign up',
+                              'Login',
                               style: TextStyle(color: Palette.primaryGreen),
                             )
                           ]),
