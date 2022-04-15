@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/country_picker_dialog.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:pro_shop_golf_club/util/constants/palette.dart';
 
 class InputField extends StatefulWidget {
   InputField(
@@ -65,5 +69,50 @@ class _InputFieldState extends State<InputField> {
         ),
       ),
     );
+  }
+}
+
+class PhoneInput extends StatefulWidget {
+  const PhoneInput({Key? key}) : super(key: key);
+
+  @override
+  State<PhoneInput> createState() => _PhoneInputState();
+}
+
+class _PhoneInputState extends State<PhoneInput> {
+  String number = '';
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Palette.white,
+      child: Center(
+        child: IntlPhoneField(
+          // controller: _controller,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          dropdownIconPosition: IconPosition.leading,
+          initialCountryCode: 'CM',
+          pickerDialogStyle: PickerDialogStyle(),
+
+          decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Palette.white)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Palette.white)),
+              hintText: 'Phone Number',
+              // labelText: 'Phone Number',
+              border: OutlineInputBorder()),
+          onChanged: (phone) {
+            print(phone.completeNumber);
+            setState(() {
+              number = phone.completeNumber;
+            });
+          },
+          onCountryChanged: (country) {
+            print('Country changed to: ' + country.name);
+          },
+        ),
+      ),
+    );
+    ;
   }
 }
