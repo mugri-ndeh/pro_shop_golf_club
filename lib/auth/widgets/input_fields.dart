@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -45,6 +46,7 @@ class _InputFieldState extends State<InputField> {
                 decoration: InputDecoration(
                   prefixIcon: widget.icon,
                   hintText: widget.hint,
+                  hintStyle: const TextStyle(color: Colors.grey),
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
                 ),
@@ -84,7 +86,15 @@ class _PhoneInputState extends State<PhoneInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Palette.white,
+      decoration: BoxDecoration(
+        color: Palette.white,
+        boxShadow: [
+          BoxShadow(
+              offset: const Offset(0, 1),
+              color: Colors.grey.shade200,
+              blurRadius: 18),
+        ],
+      ),
       child: Center(
         child: IntlPhoneField(
           // controller: _controller,
@@ -116,3 +126,96 @@ class _PhoneInputState extends State<PhoneInput> {
     ;
   }
 }
+
+class CustomDate extends StatefulWidget {
+  CustomDate({Key? key, required this.text}) : super(key: key);
+  final String text;
+
+  @override
+  State<CustomDate> createState() => CustomDateState();
+}
+
+class CustomDateState extends State<CustomDate> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        DatePicker.showDatePicker(context,
+            theme: const DatePickerTheme(
+              containerHeight: 210.0,
+            ),
+            showTitleActions: true,
+            minTime: DateTime(1950, 1, 1),
+            maxTime: DateTime.now(), onConfirm: (date) async {
+          // ignore: avoid_print
+          print('confirm $date');
+        },
+            currentTime: DateTime.now().subtract(const Duration(days: 20)),
+            locale: LocaleType.en);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Palette.white,
+          boxShadow: [
+            BoxShadow(
+                offset: const Offset(0, 1),
+                color: Colors.grey.shade200,
+                blurRadius: 18),
+          ],
+        ),
+        alignment: Alignment.center,
+        height: 50.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Row(
+                  children: const [
+                    SizedBox(width: 14),
+                    Icon(
+                      Icons.date_range,
+                      size: 24.0,
+                      color: Colors.grey,
+                    ),
+                    SizedBox(width: 12),
+                    Text(
+                      'date of birth',
+                      style: TextStyle(fontSize: 16.0, color: Colors.grey),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PaymentMethodPopup extends StatefulWidget {
+  PaymentMethodPopup({Key? key}) : super(key: key);
+
+  @override
+  State<PaymentMethodPopup> createState() => _PaymentMethodPopupState();
+}
+
+class _PaymentMethodPopupState extends State<PaymentMethodPopup> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: elevatedDecoration,
+    );
+  }
+}
+
+var elevatedDecoration = BoxDecoration(
+  color: Palette.white,
+  boxShadow: [
+    BoxShadow(
+        offset: const Offset(0, 1),
+        color: Colors.grey.shade200,
+        blurRadius: 18),
+  ],
+);
