@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pro_shop_golf_club/auth/auth_provider.dart';
+import 'package:pro_shop_golf_club/auth/index.dart';
 import 'package:pro_shop_golf_club/auth/login/login.dart';
+import 'package:pro_shop_golf_club/auth/widgets/custom_auth_button.dart';
 import 'package:pro_shop_golf_club/util/constants/palette.dart';
 import 'package:pro_shop_golf_club/util/helper/helper.dart';
+import 'package:provider/provider.dart';
 
 class Splash extends StatefulWidget {
   Splash({Key? key}) : super(key: key);
@@ -16,8 +20,10 @@ class _SplashState extends State<Splash> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(const Duration(seconds: 5)).then((value) {
-      push(context, const LoginScreen());
+    Future.delayed(const Duration(seconds: 3), () {
+      Provider.of<Authentication>(context, listen: false)
+          .init()
+          .then((value) => pushReplacement(context, const AuthRoot()));
     });
   }
 
