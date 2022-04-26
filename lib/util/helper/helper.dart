@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 import '../constants/palette.dart';
 
@@ -14,6 +15,28 @@ String? validateName(String? value) {
   } else if (value!.length > 8) {
     return "Name cannot be more than 8 characaters";
   }
+  return null;
+}
+
+String? validateGivenNames(String? value, bool first) {
+  String pattern = r'(^[a-zA-Z ]*$)';
+  RegExp regExp = RegExp(pattern);
+  if (value?.isEmpty ?? true) {
+    return first ? "first name is required" : "last name is required";
+  } else if (!regExp.hasMatch(value ?? '')) {
+    return "Name must be a-z and A-Z";
+  } else if (value!.length > 20) {
+    return "Name cannot be more than 8 characaters";
+  }
+
+  return null;
+}
+
+String? validateDob(String? value) {
+  if (value?.isEmpty ?? true) {
+    return "Date of birth is required";
+  }
+
   return null;
 }
 
@@ -57,37 +80,37 @@ String? validateConfirmPassword(String? password, String? confirmPassword) {
   }
 }
 
-//helper method to show progress
-// late ProgressDialog progressDialog;
+// helper method to show progress
+late ProgressDialog progressDialog;
 
-// showProgress(BuildContext context, String message, bool isDismissible) async {
-//   progressDialog = ProgressDialog(context,
-//       type: ProgressDialogType.Normal, isDismissible: isDismissible);
-//   progressDialog.style(
-//       message: message,
-//       borderRadius: 10.0,
-//       backgroundColor: primaryColor,
-//       progressWidget: Container(
-//         padding: const EdgeInsets.all(8.0),
-//         child: const CircularProgressIndicator(
-//           backgroundColor: Colors.white,
-//           valueColor: AlwaysStoppedAnimation(primaryColor),
-//         ),
-//       ),
-//       elevation: 10.0,
-//       insetAnimCurve: Curves.easeInOut,
-//       messageTextStyle: const TextStyle(
-//           color: Colors.white, fontSize: 19.0, fontWeight: FontWeight.w600));
-//   await progressDialog.show();
-// }
+showProgress(BuildContext context, String message, bool isDismissible) async {
+  progressDialog = ProgressDialog(context,
+      type: ProgressDialogType.Normal, isDismissible: isDismissible);
+  progressDialog.style(
+      message: message,
+      borderRadius: 10.0,
+      backgroundColor: Palette.primaryGreen,
+      progressWidget: Container(
+        padding: const EdgeInsets.all(8.0),
+        child: CircularProgressIndicator(
+          backgroundColor: Colors.white,
+          valueColor: AlwaysStoppedAnimation(Palette.primaryGreen),
+        ),
+      ),
+      elevation: 10.0,
+      insetAnimCurve: Curves.easeInOut,
+      messageTextStyle: const TextStyle(
+          color: Colors.white, fontSize: 19.0, fontWeight: FontWeight.w600));
+  await progressDialog.show();
+}
 
-// updateProgress(String message) {
-//   progressDialog.update(message: message);
-// }
+updateProgress(String message) {
+  progressDialog.update(message: message);
+}
 
-// hideProgress() async {
-//   await progressDialog.hide();
-// }
+hideProgress() async {
+  await progressDialog.hide();
+}
 
 //helper method to show alert dialog
 showAlertDialog(BuildContext context, String title, String content) {
