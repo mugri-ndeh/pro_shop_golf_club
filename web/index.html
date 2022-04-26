@@ -100,5 +100,31 @@
       loadMainDartJs();
     }
   </script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js"></script>
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAwxlglPZA7cw0m8tF7NDVnEKRHnP51aYQ",
+    authDomain: "golfhub-de75f.firebaseapp.com",
+    projectId: "golfhub-de75f",
+    storageBucket: "golfhub-de75f.appspot.com",
+    messagingSenderId: "453725375610",
+    appId: "1:453725375610:web:b400d0ddb0581321a57fc3",
+    measurementId: "G-EZM9TM1D4M"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 </body>
 </html>
