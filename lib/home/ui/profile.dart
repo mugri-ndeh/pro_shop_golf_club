@@ -42,7 +42,7 @@ class _ProfileState extends State<Profile> {
                   top: 50,
                   child: SizedBox(
                     width: size.width * 0.5,
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         "Profile",
                         style: TextStyle(fontSize: 34, color: Colors.white),
@@ -65,7 +65,7 @@ class _ProfileState extends State<Profile> {
                               CircleAvatar(
                                 radius: 50,
                                 backgroundColor: Palette.primaryGreen,
-                                child: Icon(Icons.person),
+                                child: const Icon(Icons.person),
                               ),
                               Text(
                                 auth.loggedUser!.username,
