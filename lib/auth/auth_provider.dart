@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pro_shop_golf_club/auth/complete_profile/complete_profile.dart';
 import 'package:pro_shop_golf_club/models/user.dart';
 
 enum AuthState {
   loggedIn,
   loggedOut,
   incomplete,
-  codeSent,
   loading,
   finishedOnboard,
   fresh,
@@ -21,17 +21,19 @@ class Authentication with ChangeNotifier {
   final auth = FirebaseAuth.instance;
   UserModel? loggedUser;
   String? verificationCode;
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final _firestore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
 
   late AuthState _loginState;
   get loginState => _loginState;
 
-  Authentication() {
-    init().then((value) {
-      print('Login state is');
-      print(_loginState);
-    });
-  }
+  // Authentication() {
+  //   init().then((value) {
+  //     print('Login state is');
+  //     setAuthState(_loginState);
+  //     print(_loginState);
+  //   });
+  // }
 
   setAuthState(AuthState authState) {
     _loginState = authState;
@@ -39,14 +41,14 @@ class Authentication with ChangeNotifier {
   }
 
   Future<void> init() async {
-    _loginState = AuthState.loading;
+    setAuthState(AuthState.loading);
 
     var firebaseuser = FirebaseAuth.instance.currentUser;
-    loggedUser = (await returnUser());
+    loggedUser = (await returnUser(auth.currentUser?.uid));
 
     if (firebaseuser != null) {
       print('USER LOGED IN');
-      if (loggedUser == null) {
+      if (!loggedUser!.completedProfile) {
         setAuthState(AuthState.incomplete);
         notifyListeners();
       } else {
@@ -58,43 +60,28 @@ class Authentication with ChangeNotifier {
       setAuthState(AuthState.loggedOut);
       notifyListeners();
     }
-
-    //_loginState = AuthState.Incomplete;
-    // FirebaseAuth.instance.userChanges().listen((user) async {
-    //   loggedUser = (await returnUser());
-
-    //   if (user != null) {
-    //     print('USER LOGED IN');
-    //     if (loggedUser == null) {
-    //       setAuthState(AuthState.Incomplete);
-    //       notifyListeners();
-    //     } else {
-    //       setAuthState(AuthState.LoggedIn);
-    //       notifyListeners();
-    //     }
-    //   } else {
-    //     print('USER LOGGED OUT');
-    //     setAuthState(AuthState.LoggedOut);
-    //     notifyListeners();
-    //   }
-    //});
-    // print(loggedUser!.email);
-    // print(loggedUser!.username);
   }
 
-  Future<UserModel?> login(
-      String email, String password, BuildContext context) async {
+  Future<UserModel?> login(String email, String password) async {
     isLoading = true;
     notifyListeners();
     try {
-      UserModel _user = UserModel();
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
-      _user.uid = userCredential.user!.uid;
-      _loginState = AuthState.loggedIn;
       print('Success ${userCredential.user!.displayName}');
-      loggedUser = _user;
-      return _user;
+      loggedUser = await returnUser(userCredential.user!.uid);
+      print(loggedUser!.completedProfile);
+      if (!loggedUser!.completedProfile) {
+        setAuthState(AuthState.incomplete);
+        print(_loginState);
+        notifyListeners();
+      } else {
+        setAuthState(AuthState.loggedIn);
+        print(_loginState);
+
+        notifyListeners();
+      }
+      return loggedUser;
     } on FirebaseAuthException catch (e) {
       print(e.message);
 
@@ -114,29 +101,72 @@ class Authentication with ChangeNotifier {
     return auth.authStateChanges().map(getUser);
   }
 
-  Future<UserModel?> register(String email, String username, String phone,
-      String password, BuildContext context) async {
+  Future<dynamic> register(
+    String email,
+    String username,
+    String password,
+  ) async {
     try {
       UserModel _user = UserModel();
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      userCredential.user!.updateDisplayName(username);
       _user.uid = userCredential.user!.uid;
       _user.email = userCredential.user!.email!;
       _user.username = username;
-      _user.phoneNumber = phone;
       _loginState = AuthState.loggedIn;
       loggedUser = _user;
-      //UserDb().createUser(_user);
+      createUser(_user);
       print('Success ${userCredential.user!.displayName}');
+      setAuthState(AuthState.incomplete);
+      notifyListeners();
       return _user;
     } on FirebaseAuthException catch (e) {
+      return e.message;
+    }
+  }
+
+  Future<String> createUser(UserModel user) async {
+    String retValue = 'error';
+    try {
+      await _firestore.collection("users").doc(user.uid).set(user.toJson());
+      await _auth.currentUser!.updateDisplayName(user.username);
+
+      retValue = 'success';
+    } on FirebaseException catch (e) {
       print(e.message);
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                content: Text(e.message!),
-              ));
+    }
+
+    return Future.value(retValue);
+  }
+
+  Future<String> completeProfile(UserModel user) async {
+    String retValue = 'error';
+    try {
+      await _firestore.collection("users").doc(user.uid).update(user.toJson());
+      retValue = 'success';
+      setAuthState(AuthState.loggedIn);
+      notifyListeners();
+    } on FirebaseException catch (e) {
+      print(e.message);
+    }
+
+    return Future.value(retValue);
+  }
+
+  Future<UserModel?> returnUser(String? id) async {
+    var user = UserModel();
+    if (id != null) {
+      try {
+        var userDoc = await _firestore.collection("users").doc(id).get();
+        print(userDoc.data()!);
+        user = UserModel.fromJson(userDoc.data()!);
+        print(user.uid);
+        print('USER RETURNED');
+        return user;
+      } catch (e) {
+        return null;
+      }
+    } else {
       return null;
     }
   }
@@ -150,128 +180,5 @@ class Authentication with ChangeNotifier {
     } on FirebaseAuthException catch (e) {
       print(e);
     }
-  }
-
-  Future<void> updateUsername(String username) async {
-    try {
-      User user = auth.currentUser!;
-      user.updateDisplayName(username);
-      // UserDb().updateUsername(user.uid, username);
-      loggedUser = (await returnUser())!;
-      notifyListeners();
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  Future<void> updatephone(String phone) async {
-    try {
-      User user = auth.currentUser!;
-      // UserDb().updatePhone(user.uid, phone);
-      loggedUser = (await returnUser())!;
-      notifyListeners();
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  Future<void> addPurchase(List<String> purchases) async {
-    try {
-      User user = auth.currentUser!;
-      // UserDb().addPurchase(user.uid, purchases);
-      loggedUser = (await returnUser())!;
-      notifyListeners();
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<UserModel?> returnUser() async {
-    try {
-      User user = auth.currentUser!;
-      // return await UserDb().returnUser(user.uid);
-    } catch (e) {
-      print(e);
-      print('Could not get data');
-      return null;
-    }
-  }
-
-  Future<void> signin(
-    String phoneNum,
-    BuildContext context,
-  ) async {
-    try {
-      await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: phoneNum,
-        verificationCompleted: (PhoneAuthCredential credential) async {
-          await FirebaseAuth.instance
-              .signInWithCredential(credential)
-              .then((value) async {
-            returnUser().then((value) {
-              if (value == null) {
-                setAuthState(AuthState.incomplete);
-              } else {
-                setAuthState(AuthState.loggedIn);
-                // hideProgress();
-              }
-            });
-          }).onError((error, stackTrace) => setAuthState(AuthState.loggedOut));
-        },
-        verificationFailed: (FirebaseAuthException e) {
-          // hideProgress();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(e.message.toString()),
-              duration: const Duration(seconds: 3),
-            ),
-          );
-        },
-        codeSent: (String vID, int? resendToken) {
-          // hideProgress();
-          verificationCode = vID;
-          setCode(vID);
-          setAuthState(AuthState.codeSent);
-          notifyListeners();
-        },
-        codeAutoRetrievalTimeout: (String vID) {
-          verificationCode = vID;
-        },
-        timeout: const Duration(seconds: 60),
-      );
-    } on FirebaseAuthException catch (e) {
-      print(e.message);
-      // hideProgress();
-    }
-  }
-
-  Future<String> loginWithCred(String vID, String smsCode) {
-    var status = "";
-    try {
-      PhoneAuthCredential cred =
-          PhoneAuthProvider.credential(verificationId: vID, smsCode: smsCode);
-      FirebaseAuth.instance.signInWithCredential(cred).then((value) async {
-        returnUser().then((value) {
-          if (value == null) {
-            setAuthState(AuthState.incomplete);
-          } else {
-            setAuthState(AuthState.loggedIn);
-          }
-        });
-      }).onError((error, stackTrace) => setAuthState(AuthState.loggedOut));
-      return Future.value(status);
-    } on FirebaseAuthException catch (exception, s) {
-      // hideProgress();
-      return Future.value(exception.message);
-    } catch (e, s) {
-      debugPrint(e.toString() + '$s');
-      status = 'Login failed, Please try again.';
-      // hideProgress();
-      return Future.value(status);
-    }
-  }
-
-  setCode(String code) {
-    verificationCode = code;
   }
 }
