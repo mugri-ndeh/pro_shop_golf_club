@@ -45,6 +45,7 @@ class _HomeState extends State<Home> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               height: 200,
@@ -123,11 +124,11 @@ class _HomeState extends State<Home> {
                                 SizedBox(
                                     height: 50,
                                     width: 50,
-                                    child:
-                                        Image.asset('assets/icons/golf.png')),
+                                    child: Image.asset(
+                                        'assets/icons/courses.png')),
                                 Text(
                                   'Courses',
-                                  style: TextStyle(color: Palette.primaryGreen),
+                                  style: TextStyle(color: Palette.borderGreen),
                                 )
                               ]),
                         ),
@@ -154,7 +155,7 @@ class _HomeState extends State<Home> {
                                         'assets/icons/handicap.png')),
                                 Text(
                                   'Handicap',
-                                  style: TextStyle(color: Palette.primaryGreen),
+                                  style: TextStyle(color: Palette.borderGreen),
                                 )
                               ]),
                         ),
@@ -181,7 +182,7 @@ class _HomeState extends State<Home> {
                                         Image.asset('assets/icons/shop.png')),
                                 Text(
                                   'Shop history',
-                                  style: TextStyle(color: Palette.primaryGreen),
+                                  style: TextStyle(color: Palette.borderGreen),
                                 )
                               ]),
                         )
@@ -190,6 +191,27 @@ class _HomeState extends State<Home> {
                   ),
                 )
               ]),
+            ),
+            const SizedBox(height: 10),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text('Courses'),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Container(
+                width: size.width,
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 3,
+                    itemBuilder: (context, index) => Container(
+                          height: 150,
+                          width: 150,
+                          decoration:
+                              BoxDecoration(color: Palette.primaryGreen),
+                        )),
+              ),
             )
           ],
         ),
