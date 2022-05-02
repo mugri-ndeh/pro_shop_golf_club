@@ -49,7 +49,7 @@ class _VeerifyPinState extends State<VeerifyPin> {
           width: 56,
           height: 3,
           decoration: BoxDecoration(
-            color: Palette.borderGreen,
+            color: Palette.black,
             borderRadius: BorderRadius.circular(8),
           ),
         ),
