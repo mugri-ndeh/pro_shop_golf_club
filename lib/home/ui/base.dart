@@ -4,6 +4,7 @@ import 'package:pro_shop_golf_club/home/ui/home.dart';
 import 'package:pro_shop_golf_club/home/ui/profile.dart';
 import 'package:pro_shop_golf_club/home/ui/shop.dart';
 import 'package:pro_shop_golf_club/home/ui/tournaments.dart';
+import 'package:pro_shop_golf_club/home/ui/widgets/sidebar.dart';
 import 'package:pro_shop_golf_club/util/constants/palette.dart';
 
 class BaseScreen extends StatefulWidget {
@@ -21,9 +22,36 @@ class _BaseScreenState extends State<BaseScreen> {
     Profile(),
   ];
   int _selectedIndex = 0;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: SideBar(),
+      appBar: AppBar(
+        backgroundColor: Palette.scaffoldBg,
+        elevation: 0,
+        title: Text(
+          _selectedIndex == 3 ? 'My Profile' : '',
+          style: TextStyle(color: Colors.black),
+        ),
+        leading: InkWell(
+          onTap: () {
+            _scaffoldKey.currentState!.openDrawer();
+          },
+          child: const Icon(
+            Icons.menu,
+            color: Colors.black,
+          ),
+        ),
+        actions: const [
+          Icon(
+            Icons.notifications,
+            color: Colors.black,
+          ),
+          SizedBox(width: 5)
+        ],
+      ),
       body: SafeArea(
         child: IndexedStack(
           index: _selectedIndex,
@@ -43,12 +71,13 @@ class _BaseScreenState extends State<BaseScreen> {
                   blurRadius: 4),
             ],
           ),
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: GNav(
               haptic: false, // haptic feedback
               tabBorderRadius: 30, // tab button border
               curve: Curves.bounceIn, // tab animation curves
-              duration: Duration(milliseconds: 500), // tab animation duration
+              duration:
+                  const Duration(milliseconds: 500), // tab animation duration
               gap: 8, // the tab button gap between icon and text
               color: Colors.black, // unselected icon color
               activeColor: Palette.primaryGreen, // selected icon and text color
@@ -56,11 +85,11 @@ class _BaseScreenState extends State<BaseScreen> {
               tabBackgroundColor: Palette.secondaryColor
                   .withOpacity(0.4)
                   .withOpacity(0.1), // selected tab background color
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                   horizontal: 20, vertical: 5), // navigation bar padding
               tabs: [
                 GButton(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   onPressed: () {
                     setState(() {
                       _selectedIndex = 0;
@@ -70,7 +99,7 @@ class _BaseScreenState extends State<BaseScreen> {
                   text: 'Home',
                 ),
                 GButton(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   onPressed: () {
                     setState(() {
                       _selectedIndex = 1;
@@ -80,7 +109,7 @@ class _BaseScreenState extends State<BaseScreen> {
                   text: 'Tournaments',
                 ),
                 GButton(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   onPressed: () {
                     setState(() {
                       _selectedIndex = 2;
@@ -90,7 +119,7 @@ class _BaseScreenState extends State<BaseScreen> {
                   text: 'Shop',
                 ),
                 GButton(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   onPressed: () {
                     setState(() {
                       _selectedIndex = 3;
