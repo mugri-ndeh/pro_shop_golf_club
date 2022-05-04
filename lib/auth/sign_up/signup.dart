@@ -128,7 +128,10 @@ class _SignUpState extends State<SignUp> {
                                 _emailController.text,
                                 _userNameController.text,
                                 _passwordController.text)
-                            .then((value) => hideProgress());
+                            .then((value) {
+                          hideProgress();
+                          setState(() {});
+                        });
                       }
                       // if (_formKey.currentState!.validate()) {
 
@@ -139,7 +142,9 @@ class _SignUpState extends State<SignUp> {
                   // const SizedBox(height: 50),
                   GestureDetector(
                     onTap: () {
-                      auth.setAuthState(AuthState.login);
+                      setState(() {
+                        auth.setAuthState(AuthState.login);
+                      });
                     },
                     child: Center(
                       child: SizedBox(

@@ -107,7 +107,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         auth
                             .login(
                                 _emailController.text, _passwordController.text)
-                            .then((value) => hideProgress());
+                            .then((value) {
+                          hideProgress();
+                          setState(() {});
+                        });
                       }
                     },
                     text: 'Login',
@@ -115,7 +118,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   // const SizedBox(height: 50),
                   GestureDetector(
                     onTap: (() {
-                      auth.setAuthState(AuthState.signup);
+                      print(auth.loginState);
+
+                      setState(() {
+                        auth.setAuthState(AuthState.signup);
+                      });
+
+                      print(auth.loginState);
                     }),
                     child: Center(
                       child: SizedBox(
