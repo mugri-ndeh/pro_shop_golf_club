@@ -27,14 +27,6 @@ class Authentication with ChangeNotifier {
   late AuthState _loginState;
   get loginState => _loginState;
 
-  // Authentication() {
-  //   init().then((value) {
-  //     print('Login state is');
-  //     setAuthState(_loginState);
-  //     print(_loginState);
-  //   });
-  // }
-
   setAuthState(AuthState authState) {
     _loginState = authState;
     notifyListeners();
