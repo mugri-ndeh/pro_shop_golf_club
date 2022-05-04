@@ -6,20 +6,21 @@ import 'package:pro_shop_golf_club/auth/auth_provider.dart';
 import 'package:pro_shop_golf_club/auth/onboarding/splash.dart';
 import 'package:provider/provider.dart';
 
+import 'firebase_options.dart';
 import 'util/constants/palette.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-      // options: DefaultFirebaseOptions.currentPlatform
-      );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Provider.debugCheckInvalidValueType = null;
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Palette.scaffoldBg,
       statusBarIconBrightness: Brightness.dark));
   runApp(
     MultiProvider(
-      providers: [Provider(create: (context) => Authentication())],
+      providers: [
+        ChangeNotifierProvider(create: (context) => Authentication())
+      ],
       child: MaterialApp(
         title: 'GolfHub',
         debugShowCheckedModeBanner: false,
