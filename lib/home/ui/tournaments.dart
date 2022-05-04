@@ -25,10 +25,10 @@ class _TournamentsState extends State<Tournaments> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Find the most Exciting',
+                      children: const [
+                        Text('Find the most Exciting',
                             style: TextStyle(fontSize: 20)),
-                        const Text(
+                        Text(
                           'Games to play',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 24),
@@ -45,19 +45,11 @@ class _TournamentsState extends State<Tournaments> {
                     )
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 InputField(
                   hint: 'Search for games',
-                  icon: Icon(Icons.search),
+                  icon: const Icon(Icons.search),
                 )
-                // Container(,
-                //   child: ElevatedButton(
-                //     child: Text('Logout'),
-                //     onPressed: () {
-                //       auth.logout();
-                //     },
-                //   ),
-                // ),
               ],
             ),
           ),
