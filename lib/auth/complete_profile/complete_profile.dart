@@ -106,9 +106,10 @@ class _CompleteprofileState extends State<Completeprofile> {
                           userModel.completedProfile = true;
 
                           showProgress(context, 'Completing Profile', true);
-                          auth
-                              .completeProfile(userModel)
-                              .then((value) => hideProgress());
+                          auth.completeProfile(userModel).then((value) {
+                            hideProgress();
+                            setState(() {});
+                          });
                         }
                       }
                     },
