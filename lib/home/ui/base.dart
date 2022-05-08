@@ -27,7 +27,7 @@ class _BaseScreenState extends State<BaseScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: SideBar(),
+      drawer: DrawerPage(),
       appBar: AppBar(
         backgroundColor: Palette.scaffoldBg,
         elevation: 0,
