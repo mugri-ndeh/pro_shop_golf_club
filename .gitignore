@@ -44,3 +44,12 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+/android/app/google-services.json
+
+package.json
+storage.rules
+package-lock.json
+firebase.json
+firestore.rules
+firestore.indexes.json
+.firebaserc
