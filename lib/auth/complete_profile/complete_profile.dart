@@ -19,7 +19,6 @@ class _CompleteprofileState extends State<Completeprofile> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _phoneNumberController = TextEditingController();
-  final _dobController = TextEditingController();
   late Authentication auth;
   late UserModel userModel;
   final _formKey = GlobalKey<FormState>();
@@ -66,11 +65,11 @@ class _CompleteprofileState extends State<Completeprofile> {
                   const SizedBox(height: 8),
                   PhoneInput(controller: _phoneNumberController),
                   const SizedBox(height: 8),
-                  CustomDate(
-                    prefixIcon: const Icon(Icons.calendar_month),
-                    hint: 'Date of birth',
-                    controller: _dobController,
-                  ),
+                  // CustomDate(
+                  //   prefixIcon: const Icon(Icons.calendar_month),
+                  //   hint: 'Date of birth',
+                  //   controller: _dobController,
+                  // ),
                   const SizedBox(height: 8),
                   InputField(
                     hint: 'payment method',
@@ -95,14 +94,13 @@ class _CompleteprofileState extends State<Completeprofile> {
                               context,
                               validateGivenNames(
                                   _lastNameController.text, false)!);
-                        } else if (validateDob(_dobController.text) != null) {
-                          showSnackBar(
-                              context, validateDob(_dobController.text)!);
                         } else {
-                          userModel.firstName = _firstNameController.text;
-                          userModel.lastName = _lastNameController.text;
-                          userModel.phoneNumber = _phoneNumberController.text;
-                          userModel.dob = _dobController.text;
+                          userModel.firstName =
+                              _firstNameController.text.trim();
+                          userModel.lastName = _lastNameController.text.trim();
+                          userModel.phoneNumber =
+                              _phoneNumberController.text.trim();
+                          userModel.dob = '22/09/2000';
                           userModel.completedProfile = true;
 
                           showProgress(context, 'Completing Profile', true);
