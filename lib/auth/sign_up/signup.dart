@@ -125,9 +125,10 @@ class _SignUpState extends State<SignUp> {
                         showProgress(context, 'Creating account', true);
                         auth
                             .register(
-                                _emailController.text,
-                                _userNameController.text,
-                                _passwordController.text)
+                          _emailController.text.trim(),
+                          _userNameController.text.trim(),
+                          _passwordController.text.trim(),
+                        )
                             .then((value) {
                           hideProgress();
                           setState(() {});
