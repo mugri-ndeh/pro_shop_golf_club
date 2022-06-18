@@ -23,7 +23,7 @@ class _SplashState extends State<Splash> {
     Future.delayed(const Duration(seconds: 1), () {
       Provider.of<Authentication>(context, listen: false)
           .init()
-          .then((value) => pushReplacement(context, const AuthRoot()));
+          .then((value) => pushReplacement(context, const AuthRoot(),),);
     });
   }
 
