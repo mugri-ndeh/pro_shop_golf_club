@@ -40,7 +40,11 @@ class Authentication with ChangeNotifier {
 
     if (firebaseuser != null) {
       print('USER LOGED IN');
-      if (!loggedUser!.completedProfile) {
+      if (loggedUser == null) {
+        setAuthState(AuthState.login);
+        print(_loginState);
+        notifyListeners();
+      } else if (!loggedUser!.completedProfile) {
         setAuthState(AuthState.incomplete);
         notifyListeners();
       } else {
@@ -62,7 +66,6 @@ class Authentication with ChangeNotifier {
           email: email, password: password);
       print('Success ${userCredential.user!.displayName}');
       loggedUser = await returnUser(userCredential.user!.uid);
-      print(loggedUser!.completedProfile);
       if (!loggedUser!.completedProfile) {
         setAuthState(AuthState.incomplete);
         print(_loginState);

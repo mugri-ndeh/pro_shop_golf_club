@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pro_shop_golf_club/auth/auth_provider.dart';
 import 'package:pro_shop_golf_club/auth/onboarding/splash.dart';
+import 'package:pro_shop_golf_club/home/cart/cart_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
@@ -19,7 +20,8 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => Authentication())
+        ChangeNotifierProvider(create: (context) => Authentication()),
+        ChangeNotifierProvider(create: (context) => CartHelper()),
       ],
       child: MaterialApp(
         title: 'GolfHub',

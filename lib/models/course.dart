@@ -1,6 +1,16 @@
 class Course {
-  String id;
+  int id;
   String name;
   int holes;
-  Course({required this.id, required this.name, required this.holes});
+  String location;
+  String imgUrl;
+  String distance;
+  Course({
+    this.id = 0,
+    this.name = '',
+    this.holes = 0,
+    this.location = '',
+    this.imgUrl = '',
+    this.distance = '',
+  });
 }

@@ -105,8 +105,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         print(_passwordController.text);
                         showProgress(context, 'Logging in wait', true);
                         auth
-                            .login(
-                                _emailController.text, _passwordController.text)
+                            .login(_emailController.text.trim(),
+                                _passwordController.text.trim())
                             .then((value) {
                           hideProgress();
                           setState(() {});

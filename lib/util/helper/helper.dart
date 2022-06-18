@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 import '../constants/palette.dart';
@@ -140,17 +143,17 @@ showAlertDialog(BuildContext context, String title, String content) {
 
 pushReplacement(BuildContext context, Widget destination) {
   Navigator.of(context)
-      .pushReplacement(CupertinoPageRoute(builder: (context) => destination));
+      .pushReplacement(MaterialPageRoute(builder: (context) => destination));
 }
 
 push(BuildContext context, Widget destination) {
   Navigator.of(context)
-      .push(CupertinoPageRoute(builder: (context) => destination));
+      .push(MaterialPageRoute(builder: (context) => destination));
 }
 
 pushAndRemoveUntil(BuildContext context, Widget destination, bool predict) {
   Navigator.of(context).pushAndRemoveUntil(
-      CupertinoPageRoute(builder: (context) => destination),
+      MaterialPageRoute(builder: (context) => destination),
       (Route<dynamic> route) => predict);
 }
 
@@ -212,31 +215,31 @@ bool isDarkMode(BuildContext context) {
   }
 }
 
-// InputDecoration getInputDecoration(
-//     {required String hint, required bool darkMode, required Color errorColor}) {
-//   return InputDecoration(
-//     contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-//     fillColor: darkMode ? Palette.primaryGreen: Colors.white,
-//     hintText: hint,
-//     labelText: hint,
-//     hintMaxLines: 10,
-//     focusedBorder: OutlineInputBorder(
-//         borderRadius: BorderRadius.circular(8.0),
-//         borderSide: const BorderSide(color: , width: 2.0)),
-//     errorBorder: OutlineInputBorder(
-//       borderSide: BorderSide(color: errorColor),
-//       borderRadius: BorderRadius.circular(8.0),
-//     ),
-//     focusedErrorBorder: OutlineInputBorder(
-//       borderSide: BorderSide(color: errorColor),
-//       borderRadius: BorderRadius.circular(8.0),
-//     ),
-//     enabledBorder: OutlineInputBorder(
-//       borderSide: BorderSide(color: Colors.grey.shade200),
-//       borderRadius: BorderRadius.circular(8.0),
-//     ),
-//   );
-// }
+InputDecoration getInputDecoration(
+    {required String hint, required bool darkMode, required Color errorColor}) {
+  return InputDecoration(
+    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+    fillColor: darkMode ? Palette.primaryGreen : Colors.white,
+    hintText: hint,
+    labelText: hint,
+    hintMaxLines: 10,
+    focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0),
+        borderSide: BorderSide(color: Palette.primaryGreen, width: 2.0)),
+    errorBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: errorColor),
+      borderRadius: BorderRadius.circular(8.0),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: errorColor),
+      borderRadius: BorderRadius.circular(8.0),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.grey.shade200),
+      borderRadius: BorderRadius.circular(8.0),
+    ),
+  );
+}
 
 showSnackBar(BuildContext context, String message) {
   ScaffoldMessenger.of(context)
@@ -246,4 +249,54 @@ showSnackBar(BuildContext context, String message) {
         content: Text(message),
       ),
     );
+}
+
+Widget imgplace(
+    {required BuildContext context,
+    required double height,
+    required double width}) {
+  return Center(
+    child: Stack(
+      children: [
+        CircleAvatar(
+          radius: height / 2,
+          backgroundColor: Colors.grey.shade200,
+          child: ClipOval(
+            child: SizedBox(
+                width: height,
+                height: width,
+                child: Icon(
+                  Icons.file_upload_sharp,
+                  size: height / 1.7,
+                  color: Colors.grey.shade300,
+                )),
+          ),
+        ),
+        Positioned(
+          top: height / 1.5,
+          left: height / 1.5,
+          child: CircleAvatar(
+            radius: height / 6,
+            backgroundColor: Palette.primaryGreen,
+            child: ClipOval(
+              child: SizedBox(
+                  width: height / 3,
+                  height: height / 3,
+                  child: Icon(
+                    Icons.camera_alt_outlined,
+                    size: height / 6,
+                    color: Theme.of(context).backgroundColor,
+                  )),
+            ),
+          ),
+        )
+      ],
+    ),
+  );
+}
+
+Future<File> chooseImage() async {
+  final picker = ImagePicker();
+  var pickedImage = await picker.pickImage(source: ImageSource.gallery);
+  return File(pickedImage!.path);
 }

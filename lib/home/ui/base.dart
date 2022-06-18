@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:pro_shop_golf_club/admin/dashboard.dart';
 import 'package:pro_shop_golf_club/home/ui/home.dart';
 import 'package:pro_shop_golf_club/home/ui/profile.dart';
 import 'package:pro_shop_golf_club/home/ui/shop.dart';
 import 'package:pro_shop_golf_club/home/ui/tournaments.dart';
 import 'package:pro_shop_golf_club/home/ui/widgets/sidebar.dart';
 import 'package:pro_shop_golf_club/util/constants/palette.dart';
+import 'package:pro_shop_golf_club/util/helper/helper.dart';
 
 class BaseScreen extends StatefulWidget {
   BaseScreen({Key? key}) : super(key: key);
@@ -15,25 +17,26 @@ class BaseScreen extends StatefulWidget {
 }
 
 class _BaseScreenState extends State<BaseScreen> {
-  List<Widget> _pages = [
+  final List<Widget> _pages = [
     Home(),
     Tournaments(),
-    Shop(),
+    ShopPage(),
     Profile(),
   ];
   int _selectedIndex = 0;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawerEnableOpenDragGesture: true,
       key: _scaffoldKey,
-      drawer: DrawerPage(),
+      drawer: const SideBar(),
       appBar: AppBar(
         backgroundColor: Palette.scaffoldBg,
         elevation: 0,
         title: Text(
           _selectedIndex == 3 ? 'My Profile' : '',
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
         ),
         leading: InkWell(
           onTap: () {
@@ -44,10 +47,15 @@ class _BaseScreenState extends State<BaseScreen> {
             color: Colors.black,
           ),
         ),
-        actions: const [
-          Icon(
-            Icons.notifications,
-            color: Colors.black,
+        actions: [
+          GestureDetector(
+            onTap: () {
+              push(context, DashBoard());
+            },
+            child: Icon(
+              Icons.notifications,
+              color: Colors.black,
+            ),
           ),
           SizedBox(width: 5)
         ],
